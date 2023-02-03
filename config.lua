@@ -8,7 +8,9 @@ Config = {
 		EnableCooldownMessage = true,
 		CenterText = true,
 		AlwaysDisplay = true, -- Always display the priority cooldown text even with 0 mins left?
+		UseAvailable = false, -- Replace 0 mins with 'available'?
 		CooldownDisplay = "~w~Priority Cooldown: ~r~{MINS} ~w~mins",
+		AvailableDisplay = "~w~Priority Cooldown: ~w~Available",
 		InProgressDisplay = "~w~Priority Cooldown: ~g~Priority in Progress",
 		OnHoldDisplay = "~w~Priority Cooldown: ~b~Priorities are on Hold",
 		-- TooFastDisplay triggers when a car is going over 80 MPH and priorities are in progress, on hold, or a cooldown is active 

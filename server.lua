@@ -13,12 +13,12 @@ RegisterCommand("resetpcd", function(source, args, rawCommand)
   if IsPlayerAceAllowed(src, "Badger-Priorities.ResetPCD") or IsPlayerAceAllowed(src, "Badger-Priorities.Commands") or src <= 0 then
     onHold = false;
     inProgress = false;
-	  resetPCD = true;
+      resetPCD = true;
     currentCooldownTime = 0;
     TriggerClientEvent('Badger-Priorities:Update', -1, inProgress, onHold, currentCooldownTime);
     TriggerClientEvent('Badger-Priorities:DrawText', -1, Config.Options.resetDisplay:gsub("{MINS}", currentCooldownTime))
-	if Config.Options.EnablePCDMessage then -- Reset PCD Message Toggle
-		msg(-1, Config.Messages.resetMessage) 
+    if Config.Options.EnablePCDMessage then -- Reset PCD Message Toggle
+        msg(-1, Config.Messages.resetMessage) 
     elseif src <= 0 then 
       print(Config.Messages.resetMessage)
     end
@@ -30,13 +30,13 @@ RegisterCommand("inprogress", function(source, args, rawCommand)
   if IsPlayerAceAllowed(src, "Badger-Priorities.InProgress") or IsPlayerAceAllowed(src, "Badger-Priorities.Commands") or src <= 0 then
     onHold = false;
     inProgress = true;
-	  resetPCD = false;
+      resetPCD = false;
     currentCooldownTime = 0;
     TriggerClientEvent('Badger-Priorities:Update', -1, inProgress, onHold, currentCooldownTime);
     --msg(src, 'There is a priority in progress...');
     TriggerClientEvent('Badger-Priorities:DrawText', -1, Config.Options.InProgressDisplay:gsub("{MINS}", currentCooldownTime))
-	if Config.Options.EnableProgressMessage then -- inProgress Message Toggle
-		msg(-1, Config.Messages.InProgressMessage) 
+    if Config.Options.EnableProgressMessage then -- inProgress Message Toggle
+        msg(-1, Config.Messages.InProgressMessage) 
     elseif src <= 0 then 
       print(Config.Messages.InProgressMessage)
     end
@@ -48,13 +48,13 @@ RegisterCommand("onhold", function(source, args, rawCommand)
   if IsPlayerAceAllowed(src, "Badger-Priorities.OnHold") or IsPlayerAceAllowed(src, "Badger-Priorities.Commands") or src <= 0 then
     inProgress = false;
     onHold = true;
-    resetPCD = false;	
+    resetPCD = false;   
     currentCooldownTime = 0;
     --msg(src, 'The priorities have been set on hold...');
     TriggerClientEvent('Badger-Priorities:Update', -1, inProgress, onHold, currentCooldownTime);
     TriggerClientEvent('Badger-Priorities:DrawText', -1, Config.Options.OnHoldDisplay:gsub("{MINS}", currentCooldownTime))
-	if Config.Options.EnableHoldMessage then -- On Hold Message Toggle
-	    msg(-1, Config.Messages.OnHoldMessage)
+    if Config.Options.EnableHoldMessage then -- On Hold Message Toggle
+        msg(-1, Config.Messages.OnHoldMessage)
     elseif src <= 0 then 
       print(Config.Messages.OnHoldMessage)
     end
@@ -71,14 +71,14 @@ RegisterCommand("cooldown", function(source, args, rawCommand)
         currentCooldownTime = coold;
         inProgress = false;
         onHold = false;
-		    resetPCD = false;
+            resetPCD = false;
         TriggerClientEvent('Badger-Priorities:Update', -1, inProgress, onHold, currentCooldownTime);
         --msg(src, 'The cooldown has been set to ^7' .. args[1] .. ' ^3minutes...');
         local display = Config.Options.CooldownDisplay:gsub("{MINS}", currentCooldownTime);
         TriggerClientEvent('Badger-Priorities:DrawText', -1, display)
-		if Config.Options.EnableCooldownMessage then -- Cooldown Message Toggle
-			msg(-1, Config.Messages.CooldownMessage:gsub("{MINS}", args[1]))
-		end
+        if Config.Options.EnableCooldownMessage then -- Cooldown Message Toggle
+            msg(-1, Config.Messages.CooldownMessage:gsub("{MINS}", args[1]))
+        end
       else 
         -- Not a number 
         msg(src, '^1ERROR: That is not a valid number');
@@ -100,7 +100,15 @@ Citizen.CreateThread(function()
     Wait((1000 * 5));
 
     if not onHold and not inProgress and not resetPCD then 
-      if Config.Options.AlwaysDisplay then 
+      if Config.Options.UseAvailable then 
+        if currentCooldownTime <= 0 then 
+          local display = Config.Options.AvailableDisplay:gsub("{MINS}", currentCooldownTime);
+          TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
+        else 
+          local display = Config.Options.CooldownDisplay:gsub("{MINS}", currentCooldownTime);
+          TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
+        end
+      elseif Config.Options.AlwaysDisplay then 
         local display = Config.Options.CooldownDisplay:gsub("{MINS}", currentCooldownTime);
         TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
       else
@@ -131,7 +139,7 @@ Citizen.CreateThread(function()
         TriggerClientEvent('Badger-Priorities:DrawText', -1, "");
       end 
     end
-	end
+    end
 end)
 
 Citizen.CreateThread(function()
@@ -140,7 +148,15 @@ Citizen.CreateThread(function()
     -- Every 60 seconds 
     if not onHold and not inProgress and not resetPCD then 
       -- Print on screen, the cooldown time 
-      if Config.Options.AlwaysDisplay then 
+      if Config.Options.UseAvailable then
+        if currentCooldownTime <= 0 then 
+          local display = Config.Options.AvailableDisplay:gsub("{MINS}", currentCooldownTime);
+          TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
+        else 
+          local display = Config.Options.CooldownDisplay:gsub("{MINS}", currentCooldownTime);
+          TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
+        end
+      elseif Config.Options.AlwaysDisplay then 
         local display = Config.Options.CooldownDisplay:gsub("{MINS}", currentCooldownTime);
         TriggerClientEvent('Badger-Priorities:DrawText', -1, display);
       else
